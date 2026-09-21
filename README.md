@@ -24,4 +24,3 @@ Open `http://localhost:4174`.
 ## Deployment
 
 The repository includes `vercel.json` and serves the static `dist` directory.
-

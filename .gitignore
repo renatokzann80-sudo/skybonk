@@ -1,0 +1,8 @@
+work/
+outputs/
+.sites-runtime/
+node_modules/
+.vercel/
+.openai/
+
+.vercel
