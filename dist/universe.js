@@ -24,7 +24,8 @@
   let chaos=false,gl=null,program=null,uniforms={},frameId=0,lost=false;
   const mouse={x:.64,y:.5,tx:.64,ty:.5,clickX:.64,clickY:.5,clicked:-100};
   const chaosButton=document.querySelector('.chaos-toggle');
-  chaosButton.addEventListener('click',()=>{chaos=!chaos;chaosButton.setAttribute('aria-pressed',String(chaos));chaosButton.innerHTML=chaos?'<span aria-hidden="true">✳</span> TOO DEGEN':'<span aria-hidden="true">✳</span> GO DEGEN';document.body.classList.toggle('degen',chaos);mouse.clicked=performance.now()/1000;mouse.clickX=mouse.tx;mouse.clickY=mouse.ty});
+  const degenIcon='<svg class="ui-icon icon-spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v5m0 10v5M2 12h5m10 0h5M5 5l3.5 3.5m7 7L19 19m0-14-3.5 3.5m-7 7L5 19"/></svg>';
+  chaosButton.addEventListener('click',()=>{chaos=!chaos;chaosButton.setAttribute('aria-pressed',String(chaos));chaosButton.innerHTML=degenIcon+`<span>${chaos?'TOO DEGEN':'GO DEGEN'}</span>`;document.body.classList.toggle('degen',chaos);mouse.clicked=performance.now()/1000;mouse.clickX=mouse.tx;mouse.clickY=mouse.ty});
   addEventListener('pointermove',e=>{if(!desktopPointer.matches||innerWidth<801)return;mouse.tx=e.clientX/innerWidth;mouse.ty=1-e.clientY/innerHeight;if(!motion.matches){root.style.setProperty('--pointer-x',(mouse.tx-.5)*2);root.style.setProperty('--pointer-y',(mouse.ty-.5)*2)}},{passive:true});
   addEventListener('pointerdown',e=>{if(!desktopPointer.matches||innerWidth<801||document.body.classList.contains('watching'))return;mouse.clicked=performance.now()/1000;mouse.clickX=e.clientX/innerWidth;mouse.clickY=1-e.clientY/innerHeight},{passive:true});
   const vertex=`attribute vec2 position;void main(){gl_Position=vec4(position,0.,1.);}`;
