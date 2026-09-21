@@ -6,6 +6,7 @@
   'use strict';
   const root=document.documentElement, canvas=document.getElementById('space-canvas');
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const desktopPointer=matchMedia('(hover: hover) and (pointer: fine)');
   const menu=document.getElementById('mobile-nav'), toggle=document.getElementById('menu-toggle');
   function closeMenu(){menu.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation')}
   toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';menu.hidden=!open;toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close navigation':'Open navigation')});
@@ -24,8 +25,8 @@
   const mouse={x:.64,y:.5,tx:.64,ty:.5,clickX:.64,clickY:.5,clicked:-100};
   const chaosButton=document.querySelector('.chaos-toggle');
   chaosButton.addEventListener('click',()=>{chaos=!chaos;chaosButton.setAttribute('aria-pressed',String(chaos));chaosButton.innerHTML=chaos?'<span aria-hidden="true">✳</span> TOO DEGEN':'<span aria-hidden="true">✳</span> GO DEGEN';document.body.classList.toggle('degen',chaos);mouse.clicked=performance.now()/1000;mouse.clickX=mouse.tx;mouse.clickY=mouse.ty});
-  addEventListener('pointermove',e=>{mouse.tx=e.clientX/innerWidth;mouse.ty=1-e.clientY/innerHeight;if(!motion.matches){root.style.setProperty('--pointer-x',(mouse.tx-.5)*2);root.style.setProperty('--pointer-y',(mouse.ty-.5)*2)}},{passive:true});
-  addEventListener('pointerdown',e=>{if(document.body.classList.contains('watching'))return;mouse.clicked=performance.now()/1000;mouse.clickX=e.clientX/innerWidth;mouse.clickY=1-e.clientY/innerHeight},{passive:true});
+  addEventListener('pointermove',e=>{if(!desktopPointer.matches||innerWidth<801)return;mouse.tx=e.clientX/innerWidth;mouse.ty=1-e.clientY/innerHeight;if(!motion.matches){root.style.setProperty('--pointer-x',(mouse.tx-.5)*2);root.style.setProperty('--pointer-y',(mouse.ty-.5)*2)}},{passive:true});
+  addEventListener('pointerdown',e=>{if(!desktopPointer.matches||innerWidth<801||document.body.classList.contains('watching'))return;mouse.clicked=performance.now()/1000;mouse.clickX=e.clientX/innerWidth;mouse.clickY=1-e.clientY/innerHeight},{passive:true});
   const vertex=`attribute vec2 position;void main(){gl_Position=vec4(position,0.,1.);}`;
   const fragment=`precision mediump float;
 uniform vec2 resolution;uniform vec2 mouse;uniform vec2 clickPos;uniform float time;uniform float power;uniform float clickAge;
